@@ -69,3 +69,7 @@ Media literacy in the digital era is crucial. A combination of awareness campaig
 - Partner with Boom or Alt News for a guest fact-checker session
 - Create a WhatsApp bot for basic misinformation checking
 - Submit a policy brief to the university on digital literacy integration
+
+## Contributer
+Name: Siya 
+Started CUSOC Jorney
