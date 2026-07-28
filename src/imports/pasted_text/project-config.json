@@ -1,0 +1,278 @@
+{
+  "project": {
+    "name": "TruthLens AI",
+    "type": "Premium AI Misinformation Awareness Platform",
+    "description": "An award-winning futuristic AI-powered website that helps users identify misinformation, detect deepfakes, verify news, and improve digital literacy."
+  },
+
+  "theme": {
+    "mode": "Dark",
+    "style": "Apple + OpenAI + Linear + Nothing + Cybersecurity Startup",
+    "background": "#050505",
+    "surface": "#101010",
+    "glassmorphism": true,
+    "roundedCorners": "24px",
+    "fonts": [
+      "Space Grotesk",
+      "Inter"
+    ],
+    "colors": {
+      "primary": "#00E5FF",
+      "secondary": "#7C4DFF",
+      "accent": "#00FFB2",
+      "danger": "#FF4D6D",
+      "warning": "#FFC857",
+      "text": "#FFFFFF",
+      "muted": "#A0AEC0"
+    }
+  },
+
+  "background": {
+    "type": "3D Cyber World",
+    "elements": [
+      "Animated Neural Network",
+      "Floating Particles",
+      "Digital Grid",
+      "Holographic Rings",
+      "Soft Aurora Glow",
+      "Subtle Blue Fog"
+    ],
+    "remove": [
+      "Film Grain",
+      "Dust",
+      "Scratches",
+      "Noise Texture"
+    ]
+  },
+
+  "navbar": {
+    "style": "Glass",
+    "sticky": true,
+    "blur": true,
+    "items": [
+      "Home",
+      "AI Detector",
+      "Deepfake",
+      "Resources",
+      "Quiz",
+      "About",
+      "Contact"
+    ],
+    "buttons": [
+      "Sign In",
+      "Try AI Detector"
+    ]
+  },
+
+  "hero": {
+    "layout": "Split Screen",
+
+    "left": {
+      "headline": "STOP MISINFORMATION BEFORE IT SPREADS",
+      "highlight": "MISINFORMATION",
+      "subheadline": "AI-powered fact-checking • Reverse image search • Deepfake detection • Digital literacy",
+      "buttons": [
+        "Try AI Detector",
+        "Explore Features"
+      ]
+    },
+
+    "right": {
+      "mainObject": "Large Rotating Holographic Earth",
+
+      "floatingCards": [
+        "Threat Detected",
+        "Science",
+        "AI Scanner",
+        "96% Fake",
+        "Verified Source"
+      ]
+    },
+
+    "rules": [
+      "Never allow floating cards behind heading",
+      "Never allow floating cards behind buttons",
+      "Keep 300px empty breathing space around hero text",
+      "Keep all decorative elements on right side",
+      "Reduce floating card opacity to 40%",
+      "Apply 12px blur to decorative cards",
+      "Use lower z-index for background objects",
+      "Keep hero minimal and premium"
+    ]
+  },
+
+  "sections": [
+
+    {
+      "title": "Why Misinformation Matters",
+
+      "cards": [
+        "Health Myths",
+        "Financial Scams",
+        "Political Manipulation",
+        "Fake Job Offers",
+        "Communal Rumours",
+        "Deepfake Videos"
+      ],
+
+      "style": "Floating Glass Cards"
+    },
+
+    {
+      "title": "Types of Misinformation",
+
+      "cards": [
+        "Satire",
+        "Fabrication",
+        "Manipulated Content",
+        "False Context",
+        "Clickbait",
+        "Deepfake",
+        "Imposter Content",
+        "AI Generated Fake Content"
+      ]
+    },
+
+    {
+      "title": "AI Fact Checker",
+
+      "features": [
+        "Paste Text",
+        "Paste URL",
+        "Upload Image",
+        "Upload Screenshot",
+        "Truth Score",
+        "Confidence Meter",
+        "Evidence Analysis",
+        "Source Reliability",
+        "AI Explanation"
+      ]
+    },
+
+    {
+      "title": "Deepfake Detector",
+
+      "features": [
+        "Upload Image",
+        "Upload Video",
+        "Face Scan",
+        "AI Analysis",
+        "Detection Score"
+      ]
+    },
+
+    {
+      "title": "How To Verify News",
+
+      "timeline": [
+        "Check Source",
+        "Read Beyond Headline",
+        "Reverse Image Search",
+        "Cross Verify",
+        "Check Publication Date",
+        "Look for Evidence"
+      ]
+    },
+
+    {
+      "title": "Trusted Fact Checking Platforms",
+
+      "platforms": [
+        "Boom",
+        "Alt News",
+        "Google Fact Check",
+        "Snopes",
+        "PIB Fact Check"
+      ]
+    },
+
+    {
+      "title": "Interactive Quiz",
+
+      "features": [
+        "XP",
+        "Achievements",
+        "Leaderboard",
+        "Certificates",
+        "Badges"
+      ]
+    },
+
+    {
+      "title": "Statistics",
+
+      "counters": [
+        "People Educated",
+        "News Verified",
+        "Deepfakes Detected",
+        "Campaign Reach"
+      ]
+    },
+
+    {
+      "title": "Resources",
+
+      "downloads": [
+        "Media Literacy Guide",
+        "Workshop PPT",
+        "Awareness Posters",
+        "Browser Extensions",
+        "Fact Checking Toolkit"
+      ]
+    }
+
+  ],
+
+  "animations": {
+    "scroll": "Smooth",
+    "parallax": true,
+    "hoverGlow": true,
+    "glassHover": true,
+    "magneticButtons": true,
+    "cursorTrail": true,
+    "pageTransitions": true,
+    "floatingAnimation": true,
+    "counterAnimation": true,
+    "textReveal": true,
+    "heroReveal": true
+  },
+
+  "hoverEffects": {
+    "cards": [
+      "Lift",
+      "Glow",
+      "Tilt",
+      "Border Animation"
+    ],
+
+    "buttons": [
+      "Magnetic",
+      "Ripple",
+      "Glow",
+      "Scale 1.05"
+    ]
+  },
+
+  "footer": {
+    "style": "Glass",
+    "sections": [
+      "Quick Links",
+      "Resources",
+      "Newsletter",
+      "Social Media"
+    ]
+  },
+
+  "designRules": [
+    "No overlapping elements anywhere.",
+    "Maintain perfect spacing.",
+    "Hero section must remain clean.",
+    "No cards behind text.",
+    "No cards behind buttons.",
+    "Premium Apple-level whitespace.",
+    "Consistent glassmorphism.",
+    "Use subtle animations only.",
+    "Avoid visual clutter.",
+    "Website should feel like a million-dollar AI startup."
+  ]
+}
