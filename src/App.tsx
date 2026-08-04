@@ -1,3 +1,5 @@
+
+import { supabase } from "./lib/supabase";
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -1267,7 +1269,35 @@ function ResourcesSection() {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 function Footer() {
+  const [email, setEmail] = useState("");
+const [loading, setLoading] = useState(false);
+const [message, setMessage] = useState("");
+
+
+  
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  const handleSubscribe = async () => {
+  if (!email.trim()) {
+    setMessage("❌ Please enter an email.");
+    return;
+  }
+
+  setLoading(true);
+  setMessage("");
+
+  const { error } = await supabase
+    .from("newsletter")
+    .insert([{ email }]);
+
+  if (error) {
+    setMessage("❌ " + error.message);
+  } else {
+    setMessage("✅ Successfully subscribed!");
+    setEmail("");
+  }
+
+  setLoading(false);
+};
 
   return (
     <footer id="footer" style={{
@@ -1361,11 +1391,50 @@ function Footer() {
                 className="glass-input"
                 type="email"
                 placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 style={{ padding: 12, fontSize: '0.85rem' }}
               />
-              <button className="btn-primary" style={{ fontSize: '0.85rem', padding: '12px 20px' }}>
-                Subscribe →
-              </button>
+              <button
+  className="btn-primary"
+  style={{ fontSize: '0.85rem', padding: '12px 20px' }}
+  onClick={async () => {
+    if (!email) {
+      setMessage("Please enter an email");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase
+      .from("newsletter")
+      .insert([{ email }]);
+
+    if (error) {
+      setMessage("Something went wrong!");
+      console.log(error);
+    } else {
+      setMessage("✅ Subscribed successfully!");
+      setEmail("");
+    }
+
+    setLoading(false);
+  }}
+>
+  {loading ? "Subscribing..." : "Subscribe →"}
+</button>
+{message && (
+  <p
+    style={{
+      color: message.startsWith("✅") ? "#22c55e" : "#ef4444",
+      fontSize: "0.8rem",
+      marginTop: 8,
+    }}
+  >
+    {message}
+  </p>
+)}
             </div>
           </div>
         </div>
