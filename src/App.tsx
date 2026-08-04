@@ -1281,6 +1281,12 @@ const [message, setMessage] = useState("");
     setMessage("❌ Please enter an email.");
     return;
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(email)) {
+  setMessage("❌ Please enter a valid email address.");
+  return;
+}
 
   setLoading(true);
   setMessage("");
@@ -1397,30 +1403,9 @@ const [message, setMessage] = useState("");
               />
               <button
   className="btn-primary"
-  style={{ fontSize: '0.85rem', padding: '12px 20px' }}
-  onClick={async () => {
-    if (!email) {
-      setMessage("Please enter an email");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    const { error } = await supabase
-      .from("newsletter")
-      .insert([{ email }]);
-
-    if (error) {
-      setMessage("Something went wrong!");
-      console.log(error);
-    } else {
-      setMessage("✅ Subscribed successfully!");
-      setEmail("");
-    }
-
-    setLoading(false);
-  }}
+  style={{ fontSize: "0.85rem", padding: "12px 20px" }}
+  onClick={handleSubscribe}
+  disabled={loading}
 >
   {loading ? "Subscribing..." : "Subscribe →"}
 </button>
