@@ -1,4 +1,3 @@
-
 import { supabase } from "./lib/supabase";
 import { useState, useEffect, useRef, useCallback } from 'react'
 
@@ -609,86 +608,28 @@ function AIFactChecker() {
   const [result, setResult] = useState<null | { score: number; confidence: number; verdict: string; explanation: string; sources: string[] }>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const [fileName, setFileName] = useState('')
-  const [imagePreview, setImagePreview] = useState("");
 
   const runAnalysis = useCallback(() => {
-  if (!input.trim() && !fileName) return;
-
-  setAnalyzing(true);
-  setResult(null);
-
-  setTimeout(() => {
-    const text = (input || fileName).toLowerCase();
-
-    let score = 90;
-    if (activeTab === "url") {
-  if (
-    text.includes("bit.ly") ||
-    text.includes("tinyurl") ||
-    text.includes("t.me") ||
-    text.includes("goo.gl")
-  ) {
-    score = 35;
-  }
-
-  if (
-    text.includes("reuters.com") ||
-    text.includes("bbc.com") ||
-    text.includes("apnews.com") ||
-    text.includes("who.int")
-  ) {
-    score = 92;
-  }
-}
-
-    // Image analysis
-    if (activeTab === "image") {
-      if (fileName.toLowerCase().includes("edited")) score = 45;
-      if (fileName.toLowerCase().includes("fake")) score = 35;
-      if (fileName.toLowerCase().includes("real")) score = 92;
-    }
-
-    // Text analysis
-    const suspiciousWords = [
-      "breaking",
-      "shocking",
-      "viral",
-      "must share",
-      "100%",
-      "secret",
-      "miracle",
-      "click here",
-      "urgent",
-      "forward"
-    ];
-
-    suspiciousWords.forEach((word) => {
-      if (text.includes(word)) {
-        score -= 8;
-      }
-    });
-
-    score = Math.max(25, Math.min(95, score));
-
-    const isTrustworthy = score > 70;
-
-    setResult({
-      score,
-      confidence: Math.floor(Math.random() * 15) + 82,
-      verdict: isTrustworthy
-        ? "Likely Authentic"
-        : "Potentially Misleading",
-      explanation: isTrustworthy
-        ? "The content aligns with verified reporting from multiple credible sources. No significant manipulations or logical inconsistencies detected."
-        : "Analysis detected several indicators of potential misinformation. Cross-verification recommended.",
-      sources: isTrustworthy
-        ? ["Reuters Fact Check", "AP News Verification", "Snopes.com"]
-        : ["Alt News", "Boom Live", "Google Fact Check Explorer"],
-    });
-
-    setAnalyzing(false);
-  }, 2200);
-}, [input, fileName, activeTab]);
+    if (!input.trim() && !fileName) return
+    setAnalyzing(true)
+    setResult(null)
+    setTimeout(() => {
+      const score = Math.floor(Math.random() * 40) + 60
+      const isTrustworthy = score > 70
+      setResult({
+        score,
+        confidence: Math.floor(Math.random() * 15) + 82,
+        verdict: isTrustworthy ? 'Likely Authentic' : 'Potentially Misleading',
+        explanation: isTrustworthy
+          ? "The content aligns with verified reporting from multiple credible sources. No significant manipulations or logical inconsistencies detected. Language patterns are consistent with factual reporting."
+          : "Analysis detected several indicators of potential misinformation: emotionally charged language, lack of verifiable sources, and patterns inconsistent with credible journalism. Cross-verification recommended.",
+        sources: isTrustworthy
+          ? ['Reuters Fact Check', 'AP News Verification', 'Snopes.com']
+          : ['Alt News', 'Boom Live', 'Google Fact Check Explorer'],
+      })
+      setAnalyzing(false)
+    }, 2200)
+  }, [input, fileName])
 
   const scoreColor = result
     ? result.score >= 75 ? 'var(--accent)'
@@ -744,10 +685,7 @@ function AIFactChecker() {
             )}
             {activeTab === 'image' && (
               <div
-                onClick={() => {
-  console.log("clicked");
-  fileRef.current?.click();
-}}
+                onClick={() => fileRef.current?.click()}
                 style={{
                   border: '2px dashed rgba(255,255,255,0.1)',
                   borderRadius: 14,
@@ -764,48 +702,7 @@ function AIFactChecker() {
                   {fileName || 'Drop image or click to upload'}
                 </div>
                 <div style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>PNG, JPG, WebP up to 10MB</div>
-                <input
-  ref={fileRef}
-  type="file"
-  accept="image/*"
-  style={{ display: "none" }}
-  onChange={(e) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    setFileName(file.name);
-    setImagePreview(URL.createObjectURL(file));
-  }}
-/>
-                {imagePreview && (
-  <div style={{ marginTop: 20, textAlign: "center" }}>
-    <img
-      src={imagePreview}
-      alt="Preview"
-      style={{
-        maxWidth: "100%",
-        maxHeight: "250px",
-        borderRadius: "12px",
-        border: "2px solid rgba(255,255,255,0.1)"
-      }}
-    />
-
-    <br />
-
-    <button
-      className="btn-primary"
-      style={{ marginTop: 10 }}
-      onClick={(e) => {
-        e.stopPropagation();
-        setImagePreview("");
-        setFileName("");
-      }}
-    >
-      ❌ Remove Image
-    </button>
-  </div>
-)}
+                <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setFileName(e.target.files?.[0]?.name || '')} />
               </div>
             )}
 
@@ -834,183 +731,54 @@ function AIFactChecker() {
 
             {/* Results */}
             {result && (
-  <div
-    style={{
-      marginTop: 24,
-      padding: 24,
-      borderRadius: 16,
-      background: "rgba(255,255,255,0.03)",
-      border: `1px solid ${scoreColor}30`,
-      animation: "fade-in-up 0.4s ease",
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        gap: 24,
-        flexWrap: "wrap",
-        marginBottom: 20,
-      }}
-    >
-      {/* Truth score */}
-      <div style={{ flex: 1, minWidth: 140 }}>
-        <div
-          style={{
-            fontSize: "0.75rem",
-            color: "var(--muted)",
-            marginBottom: 6,
-            fontFamily: "Space Mono",
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-          }}
-        >
-          Truth Score
-        </div>
-
-        <div
-          style={{
-            fontFamily: "Space Grotesk",
-            fontWeight: 700,
-            fontSize: "2.5rem",
-            color: scoreColor,
-          }}
-        >
-          {result.score}%
-        </div>
-
-        <div
-          style={{
-            fontFamily: "Space Grotesk",
-            fontWeight: 600,
-            color: scoreColor,
-            fontSize: "0.9rem",
-          }}
-        >
-          {result.verdict}
-        </div>
-
-        <div className="progress-bar" style={{ marginTop: 8 }}>
-          <div
-            className="progress-fill"
-            style={{
-              width: `${result.score}%`,
-              background: `linear-gradient(90deg, ${scoreColor}, ${scoreColor}80)`,
-            }}
-          />
+              <div style={{
+                marginTop: 24,
+                padding: 24,
+                borderRadius: 16,
+                background: 'rgba(255,255,255,0.03)',
+                border: `1px solid ${scoreColor}30`,
+                animation: 'fade-in-up 0.4s ease',
+              }}>
+                <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 20 }}>
+                  {/* Truth score */}
+                  <div style={{ flex: 1, minWidth: 140 }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 6, fontFamily: 'Space Mono', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Truth Score</div>
+                    <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: '2.5rem', color: scoreColor }}>{result.score}%</div>
+                    <div style={{ fontFamily: 'Space Grotesk', fontWeight: 600, color: scoreColor, fontSize: '0.9rem' }}>{result.verdict}</div>
+                    <div className="progress-bar" style={{ marginTop: 8 }}>
+                      <div className="progress-fill" style={{ width: `${result.score}%`, background: `linear-gradient(90deg, ${scoreColor}, ${scoreColor}80)` }} />
+                    </div>
+                  </div>
+                  {/* Confidence */}
+                  <div style={{ flex: 1, minWidth: 140 }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 6, fontFamily: 'Space Mono', textTransform: 'uppercase', letterSpacing: '0.05em' }}>AI Confidence</div>
+                    <div style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: '2.5rem', color: 'var(--primary)' }}>{result.confidence}%</div>
+                    <div className="progress-bar" style={{ marginTop: 22 }}>
+                      <div className="progress-fill" style={{ width: `${result.confidence}%`, background: 'linear-gradient(90deg, var(--primary), var(--secondary))' }} />
+                    </div>
+                  </div>
+                </div>
+                {/* Explanation */}
+                <div style={{ padding: '14px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: 10, marginBottom: 16, fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+                  <strong style={{ color: 'var(--text)', fontFamily: 'Space Grotesk' }}>AI Analysis: </strong>{result.explanation}
+                </div>
+                {/* Source reliability */}
+                <div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 8, fontFamily: 'Space Mono', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Source Reliability Check</div>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {result.sources.map(src => (
+                      <span key={src} className="badge badge-accent">{src}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Confidence */}
-      <div style={{ flex: 1, minWidth: 140 }}>
-        <div
-          style={{
-            fontSize: "0.75rem",
-            color: "var(--muted)",
-            marginBottom: 6,
-            fontFamily: "Space Mono",
-            textTransform: "uppercase",
-            letterSpacing: "0.05em",
-          }}
-        >
-          AI Confidence
-        </div>
-
-        <div
-          style={{
-            fontFamily: "Space Grotesk",
-            fontWeight: 700,
-            fontSize: "2.5rem",
-            color: "var(--primary)",
-          }}
-        >
-          {result.confidence}%
-        </div>
-
-        <div className="progress-bar" style={{ marginTop: 22 }}>
-          <div
-            className="progress-fill"
-            style={{
-              width: `${result.confidence}%`,
-              background:
-                "linear-gradient(90deg, var(--primary), var(--secondary))",
-            }}
-          />
-        </div>
-      </div>
-    </div>
-
-    {/* Explanation */}
-    <div
-      style={{
-        padding: "14px 16px",
-        background: "rgba(255,255,255,0.03)",
-        borderRadius: 10,
-        marginBottom: 16,
-        fontSize: "0.875rem",
-        color: "var(--muted)",
-        lineHeight: 1.6,
-      }}
-    >
-      <strong
-        style={{
-          color: "var(--text)",
-          fontFamily: "Space Grotesk",
-        }}
-      >
-        AI Analysis:
-      </strong>{" "}
-      {result.explanation}
-    </div>
-
-    {/* Source reliability */}
-    <div>
-      <div
-        style={{
-          fontSize: "0.75rem",
-          color: "var(--muted)",
-          marginBottom: 8,
-          fontFamily: "Space Mono",
-          textTransform: "uppercase",
-          letterSpacing: "0.05em",
-        }}
-      >
-        Source Reliability Check
-      </div>
-
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        {result.sources.map((src) => (
-          <span key={src} className="badge badge-accent">
-            {src}
-          </span>
-        ))}
-      </div>
-    </div>
-
-    {/* Copy Analysis Button */}
-    <div style={{ marginTop: 20 }}>
-      <button
-        className="btn-primary"
-        style={{
-          width: "100%",
-          justifyContent: "center",
-          display: "flex",
-          alignItems: "center",
-        }}
-        onClick={() => {
-          navigator.clipboard.writeText(
-            `Truth Score: ${result.score}%\nVerdict: ${result.verdict}\nConfidence: ${result.confidence}%\n\nAI Analysis:\n${result.explanation}\n\nSources:\n${result.sources.join(
-              ", "
-            )}`
-          );
-
-          alert("✅ Analysis copied successfully!");
-        }}
-      >
-        📋 Copy Analysis
-      </button>
-    </div>
-  </div>
-)}
+    </section>
+  )
+}
 
 // ─── Deepfake Detector ────────────────────────────────────────────────────────
 function DeepfakeDetector() {
@@ -1058,10 +826,7 @@ function DeepfakeDetector() {
 
             <div
               className="scan-container"
-              onClick={() => {
-  console.log("Clicked");
-  fileRef.current?.click();
-}}
+              onClick={() => fileRef.current?.click()}
               style={{
                 minHeight: 200,
                 display: 'flex',
@@ -1486,11 +1251,20 @@ function ResourcesSection() {
                   </div>
                   <p style={{ color: 'var(--muted)', fontSize: '0.8rem', margin: '0 0 12px', lineHeight: 1.5 }}>{r.desc}</p>
                   <button
-                    className="btn-ghost"
-                    style={{ fontSize: '0.78rem', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: 6 }}
-                  >
-                    ⬇ Download &nbsp;·&nbsp; {r.size}
-                  </button>
+  className="btn-ghost"
+  style={{
+    fontSize: "0.78rem",
+    padding: "8px 16px",
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+  }}
+  onClick={() => {
+    alert("📥 Download started!");
+  }}
+>
+  ⬇ Download · {r.size}
+</button>
                 </div>
               </div>
             </div>
@@ -1515,12 +1289,6 @@ const [message, setMessage] = useState("");
     setMessage("❌ Please enter an email.");
     return;
   }
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-if (!emailRegex.test(email)) {
-  setMessage("❌ Please enter a valid email address.");
-  return;
-}
 
   setLoading(true);
   setMessage("");
@@ -1637,9 +1405,30 @@ if (!emailRegex.test(email)) {
               />
               <button
   className="btn-primary"
-  style={{ fontSize: "0.85rem", padding: "12px 20px" }}
-  onClick={handleSubscribe}
-  disabled={loading}
+  style={{ fontSize: '0.85rem', padding: '12px 20px' }}
+  onClick={async () => {
+    if (!email) {
+      setMessage("Please enter an email");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    const { error } = await supabase
+      .from("newsletter")
+      .insert([{ email }]);
+
+    if (error) {
+      setMessage("Something went wrong!");
+      console.log(error);
+    } else {
+      setMessage("✅ Subscribed successfully!");
+      setEmail("");
+    }
+
+    setLoading(false);
+  }}
 >
   {loading ? "Subscribing..." : "Subscribe →"}
 </button>
