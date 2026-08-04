@@ -609,6 +609,7 @@ function AIFactChecker() {
   const [result, setResult] = useState<null | { score: number; confidence: number; verdict: string; explanation: string; sources: string[] }>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const [fileName, setFileName] = useState('')
+  const [imagePreview, setImagePreview] = useState("");
 
   const runAnalysis = useCallback(() => {
     if (!input.trim() && !fileName) return
@@ -709,7 +710,10 @@ score = Math.max(25, Math.min(95, score));
             )}
             {activeTab === 'image' && (
               <div
-                onClick={() => fileRef.current?.click()}
+                onClick={() => {
+  console.log("clicked");
+  fileRef.current?.click();
+}}
                 style={{
                   border: '2px dashed rgba(255,255,255,0.1)',
                   borderRadius: 14,
@@ -726,7 +730,48 @@ score = Math.max(25, Math.min(95, score));
                   {fileName || 'Drop image or click to upload'}
                 </div>
                 <div style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>PNG, JPG, WebP up to 10MB</div>
-                <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setFileName(e.target.files?.[0]?.name || '')} />
+                <input
+  ref={fileRef}
+  type="file"
+  accept="image/*"
+  style={{ display: "none" }}
+  onChange={(e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setFileName(file.name);
+    setImagePreview(URL.createObjectURL(file));
+  }}
+/>
+                {imagePreview && (
+  <div style={{ marginTop: 20, textAlign: "center" }}>
+    <img
+      src={imagePreview}
+      alt="Preview"
+      style={{
+        maxWidth: "100%",
+        maxHeight: "250px",
+        borderRadius: "12px",
+        border: "2px solid rgba(255,255,255,0.1)"
+      }}
+    />
+
+    <br />
+
+    <button
+      className="btn-primary"
+      style={{ marginTop: 10 }}
+      onClick={(e) => {
+        e.stopPropagation();
+        setImagePreview("");
+        setFileName("");
+      }}
+    >
+      ❌ Remove Image
+    </button>
+  </div>
+)}
               </div>
             )}
 
@@ -850,7 +895,10 @@ function DeepfakeDetector() {
 
             <div
               className="scan-container"
-              onClick={() => fileRef.current?.click()}
+              onClick={() => {
+  console.log("Clicked");
+  fileRef.current?.click();
+}}
               style={{
                 minHeight: 200,
                 display: 'flex',

@@ -682,29 +682,78 @@ function AIFactChecker() {
                 style={{ padding: 16 }}
               />
             )}
-            {activeTab === 'image' && (
-              <div
-                onClick={() => fileRef.current?.click()}
-                style={{
-                  border: '2px dashed rgba(255,255,255,0.1)',
-                  borderRadius: 14,
-                  padding: '40px 24px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(0,229,255,0.3)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}
-              >
-                <div style={{ fontSize: 32, marginBottom: 8 }}>📸</div>
-                <div style={{ color: 'var(--text)', marginBottom: 4, fontFamily: 'Space Grotesk', fontWeight: 500 }}>
-                  {fileName || 'Drop image or click to upload'}
-                </div>
-                <div style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>PNG, JPG, WebP up to 10MB</div>
-                <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => setFileName(e.target.files?.[0]?.name || '')} />
-              </div>
-            )}
+            {activeTab === "image" && (
+  <>
+    <div
+      onClick={() => fileRef.current?.click()}
+      style={{
+        border: "2px dashed rgba(255,255,255,0.1)",
+        borderRadius: 14,
+        padding: "40px 24px",
+        textAlign: "center",
+        cursor: "pointer",
+        transition: "all 0.2s",
+      }}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.borderColor = "rgba(0,229,255,0.3)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")
+      }
+    >
+      <div style={{ fontSize: 32, marginBottom: 8 }}>📸</div>
 
+      <div
+        style={{
+          color: "var(--text)",
+          marginBottom: 4,
+          fontFamily: "Space Grotesk",
+          fontWeight: 500,
+        }}
+      >
+        {fileName || "Drop image or click to upload"}
+      </div>
+
+      <div
+        style={{
+          color: "var(--muted)",
+          fontSize: "0.8rem",
+        }}
+      >
+        PNG, JPG, WebP up to 10MB
+      </div>
+
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+
+          if (!file) return;
+
+          setFileName(file.name);
+          setImagePreview(URL.createObjectURL(file));
+        }}
+      />
+    </div>
+
+    {imagePreview && (
+      <div style={{ marginTop: 20, textAlign: "center" }}>
+        <img
+          src={imagePreview}
+          alt="Preview"
+          style={{
+            maxWidth: "100%",
+            maxHeight: 300,
+            borderRadius: 12,
+          }}
+        />
+      </div>
+    )}
+  </>
+)}
             {/* Screenshot tab  */}
             {activeTab === 'image' && (
               <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
