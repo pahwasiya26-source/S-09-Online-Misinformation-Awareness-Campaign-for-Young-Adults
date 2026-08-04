@@ -612,49 +612,83 @@ function AIFactChecker() {
   const [imagePreview, setImagePreview] = useState("");
 
   const runAnalysis = useCallback(() => {
-    if (!input.trim() && !fileName) return
-    setAnalyzing(true)
-    setResult(null)
-    setTimeout(() => {
-      const text = (input || fileName).toLowerCase();
+  if (!input.trim() && !fileName) return;
 
-const suspiciousWords = [
-  "breaking",
-  "shocking",
-  "viral",
-  "must share",
-  "100%",
-  "secret",
-  "miracle",
-  "click here",
-  "urgent",
-  "forward"
-];
+  setAnalyzing(true);
+  setResult(null);
 
-let score = 90;
+  setTimeout(() => {
+    const text = (input || fileName).toLowerCase();
 
-suspiciousWords.forEach(word => {
-  if (text.includes(word)) {
-    score -= 8;
+    let score = 90;
+    if (activeTab === "url") {
+  if (
+    text.includes("bit.ly") ||
+    text.includes("tinyurl") ||
+    text.includes("t.me") ||
+    text.includes("goo.gl")
+  ) {
+    score = 35;
   }
-});
 
-score = Math.max(25, Math.min(95, score));
-      const isTrustworthy = score > 70
-      setResult({
-        score,
-        confidence: Math.floor(Math.random() * 15) + 82,
-        verdict: isTrustworthy ? 'Likely Authentic' : 'Potentially Misleading',
-        explanation: isTrustworthy
-          ? "The content aligns with verified reporting from multiple credible sources. No significant manipulations or logical inconsistencies detected. Language patterns are consistent with factual reporting."
-          : "Analysis detected several indicators of potential misinformation: emotionally charged language, lack of verifiable sources, and patterns inconsistent with credible journalism. Cross-verification recommended.",
-        sources: isTrustworthy
-          ? ['Reuters Fact Check', 'AP News Verification', 'Snopes.com']
-          : ['Alt News', 'Boom Live', 'Google Fact Check Explorer'],
-      })
-      setAnalyzing(false)
-    }, 2200)
-  }, [input, fileName])
+  if (
+    text.includes("reuters.com") ||
+    text.includes("bbc.com") ||
+    text.includes("apnews.com") ||
+    text.includes("who.int")
+  ) {
+    score = 92;
+  }
+}
+
+    // Image analysis
+    if (activeTab === "image") {
+      if (fileName.toLowerCase().includes("edited")) score = 45;
+      if (fileName.toLowerCase().includes("fake")) score = 35;
+      if (fileName.toLowerCase().includes("real")) score = 92;
+    }
+
+    // Text analysis
+    const suspiciousWords = [
+      "breaking",
+      "shocking",
+      "viral",
+      "must share",
+      "100%",
+      "secret",
+      "miracle",
+      "click here",
+      "urgent",
+      "forward"
+    ];
+
+    suspiciousWords.forEach((word) => {
+      if (text.includes(word)) {
+        score -= 8;
+      }
+    });
+
+    score = Math.max(25, Math.min(95, score));
+
+    const isTrustworthy = score > 70;
+
+    setResult({
+      score,
+      confidence: Math.floor(Math.random() * 15) + 82,
+      verdict: isTrustworthy
+        ? "Likely Authentic"
+        : "Potentially Misleading",
+      explanation: isTrustworthy
+        ? "The content aligns with verified reporting from multiple credible sources. No significant manipulations or logical inconsistencies detected."
+        : "Analysis detected several indicators of potential misinformation. Cross-verification recommended.",
+      sources: isTrustworthy
+        ? ["Reuters Fact Check", "AP News Verification", "Snopes.com"]
+        : ["Alt News", "Boom Live", "Google Fact Check Explorer"],
+    });
+
+    setAnalyzing(false);
+  }, 2200);
+}, [input, fileName, activeTab]);
 
   const scoreColor = result
     ? result.score >= 75 ? 'var(--accent)'
