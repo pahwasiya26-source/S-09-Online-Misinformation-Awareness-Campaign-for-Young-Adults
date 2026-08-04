@@ -73,3 +73,41 @@ Media literacy in the digital era is crucial. A combination of awareness campaig
 ## Contributer
 Name: Siya 
 Started CUSOC Jorney
+# 🛡️ TruthLens AI
+
+An AI-powered platform that helps users identify misinformation, fake news, and deepfake content while improving media literacy.
+
+## ✨ Features
+
+- 🔍 AI-powered Fake News Detection
+- 🤖 Deepfake Awareness
+- 📚 Media Literacy Resources
+- 🧠 Interactive Quiz
+- 📊 Misinformation Statistics
+- 📧 Newsletter Subscription (Supabase)
+- 📱 Responsive Design
+
+## 🛠️ Tech Stack
+
+- React
+- TypeScript
+- Vite
+- Supabase
+- CSS
+
+## 🚀 Installation
+
+```bash
+npm install
+npm run dev
+```
+
+
+## 👨‍💻 Authors
+
+- Siya Pahwa
+- Team Mavericks
+
+## 📄 License
+
+MIT License
