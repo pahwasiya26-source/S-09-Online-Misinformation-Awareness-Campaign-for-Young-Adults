@@ -615,7 +615,30 @@ function AIFactChecker() {
     setAnalyzing(true)
     setResult(null)
     setTimeout(() => {
-      const score = Math.floor(Math.random() * 40) + 60
+      const text = (input || fileName).toLowerCase();
+
+const suspiciousWords = [
+  "breaking",
+  "shocking",
+  "viral",
+  "must share",
+  "100%",
+  "secret",
+  "miracle",
+  "click here",
+  "urgent",
+  "forward"
+];
+
+let score = 90;
+
+suspiciousWords.forEach(word => {
+  if (text.includes(word)) {
+    score -= 8;
+  }
+});
+
+score = Math.max(25, Math.min(95, score));
       const isTrustworthy = score > 70
       setResult({
         score,
