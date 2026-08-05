@@ -478,56 +478,86 @@ function HeroSection() {
 }
 
 // ─── Section Header ───────────────────────────────────────────────────────────
-function SectionHeader({ badge, title, highlight, subtitle, color = 'var(--primary)' }: {
+function SectionHeader({
+  badge,
+  title,
+  highlight,
+  subtitle,
+  color = 'var(--primary)',
+}: {
   badge?: string
   title: string
   highlight?: string
   subtitle?: string
   color?: string
 }) {
-  const titleParts = highlight ? title.split(highlight) : [title]
-
   return (
     <div style={{ textAlign: 'center', marginBottom: 64 }}>
       {badge && (
-        <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}>
-          <span className="badge" style={{ background: `${color}18`, border: `1px solid ${color}30`, color }}>
+        <div
+          style={{
+            marginBottom: 16,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <span
+            className="badge"
+            style={{
+              background: `${color}18`,
+              border: `1px solid ${color}30`,
+              color,
+            }}
+          >
             {badge}
           </span>
         </div>
       )}
-      <h2 style={{
-        fontFamily: 'Space Grotesk, sans-serif',
-        fontWeight: 700,
-        fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
-        letterSpacing: '-0.03em',
-        margin: '0 0 16px',
-        color: 'var(--text)',
-      }}>
-        {highlight ? (
-          <>
-            {titleParts[0]}
-            <span style={{
-              background: `linear-gradient(135deg, ${color}, ${color}80)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              {highlight}
-            </span>
-            {titleParts[1]}
-          </>
-        ) : title}
+
+      <h2
+        style={{
+          fontFamily: 'Space Grotesk, sans-serif',
+          fontWeight: 700,
+          fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)',
+          letterSpacing: '-0.03em',
+          margin: '0 0 16px',
+          color: 'var(--text)',
+          lineHeight: 1.3,
+          textAlign: 'center',
+          wordBreak: 'break-word',
+          whiteSpace: 'normal',
+        }}
+      >
+        {title}
+        {highlight && (
+          <span
+            style={{
+              color: color,
+              marginLeft: '8px',
+              fontWeight: 700,
+            }}
+          >
+            {highlight}
+          </span>
+        )}
       </h2>
+
       {subtitle && (
-        <p style={{ color: 'var(--muted)', fontSize: '1rem', maxWidth: 560, margin: '0 auto', lineHeight: 1.6 }}>
+        <p
+          style={{
+            color: 'var(--muted)',
+            fontSize: '1rem',
+            maxWidth: 560,
+            margin: '0 auto',
+            lineHeight: 1.6,
+          }}
+        >
           {subtitle}
         </p>
       )}
     </div>
   )
 }
-
 // ─── Why Misinformation Matters ───────────────────────────────────────────────
 function WhySection() {
   return (
