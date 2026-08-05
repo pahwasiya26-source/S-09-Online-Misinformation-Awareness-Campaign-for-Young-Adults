@@ -300,9 +300,7 @@ function Navbar({ activeSection }: { activeSection: string }) {
 
       {/* Buttons */}
       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-        <button className="btn-ghost" style={{ padding: '10px 20px', fontSize: '0.8rem' }}>
-          Sign In
-        </button>
+        
         <button
           className="btn-primary"
           style={{ padding: '10px 20px', fontSize: '0.8rem' }}
