@@ -106,11 +106,46 @@ const VERIFY_STEPS = [
 ]
 
 const FACT_PLATFORMS = [
-  { name: "Boom Live", url: "boomlive.in", badge: "India", logo: "💥", desc: "India's pioneering fact-checking newsroom covering viral misinformation" },
-  { name: "Alt News", url: "altnews.in", badge: "India", logo: "🔍", desc: "Independent fact-checker known for data-driven political verification" },
-  { name: "Google Fact Check", url: "toolbox.google.com", badge: "Global", logo: "🌐", desc: "Search-powered aggregator of fact-checks from verified publishers worldwide" },
-  { name: "Snopes", url: "snopes.com", badge: "Global", logo: "🦅", desc: "The internet's longest-running fact-checking and urban legend reference site" },
-  { name: "PIB Fact Check", url: "pib.gov.in", badge: "Official", logo: "🏛️", desc: "Official Government of India fact-checking unit for public information" },
+  {
+    name: "Boom Live",
+    url: "boomlive.in",
+    website: "https://www.boomlive.in",
+    badge: "India",
+    logo: "💥",
+    desc: "India's pioneering fact-checking newsroom covering viral misinformation"
+  },
+  {
+    name: "Alt News",
+    url: "altnews.in",
+    website: "https://www.altnews.in",
+    badge: "India",
+    logo: "🔍",
+    desc: "Independent fact-checker known for data-driven political verification"
+  },
+  {
+    name: "Google Fact Check",
+    url: "toolbox.google.com",
+    website: "https://toolbox.google.com/factcheck/explorer",
+    badge: "Global",
+    logo: "🌐",
+    desc: "Search-powered aggregator of fact-checks from verified publishers worldwide"
+  },
+  {
+    name: "Snopes",
+    url: "snopes.com",
+    website: "https://www.snopes.com",
+    badge: "Global",
+    logo: "🦅",
+    desc: "The internet's longest-running fact-checking and urban legend reference site"
+  },
+  {
+    name: "PIB Fact Check",
+    url: "pib.gov.in",
+    website: "https://factcheck.pib.gov.in",
+    badge: "Official",
+    logo: "🏛️",
+    desc: "Official Government of India fact-checking unit for public information"
+  },
 ]
 
 const STATS = [
@@ -1193,7 +1228,24 @@ function PlatformsSection() {
           gap: 16,
         }}>
           {FACT_PLATFORMS.map(p => (
-            <div key={p.name} className="glass-card" style={{ padding: 24 }}>
+            <div
+  key={p.name}
+  className="glass-card"
+  onClick={() => window.open(p.website, "_blank")}
+  style={{
+    padding: 24,
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+  }}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-4px)";
+    e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,255,178,0.15)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow = "none";
+  }}
+>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
                 <div style={{
                   width: 48,
