@@ -1678,11 +1678,19 @@ const [message, setMessage] = useState("");
 
   <div style={{ display: 'flex', gap: 10 }}>
     {[
-      { icon: "𝕏", link: "https://x.com" },
-      { icon: "in", link: "https://linkedin.com" },
-      { icon: "📘", link: "https://facebook.com" },
-      { icon: "▶", link: "https://youtube.com" },
-    ].map((item) => (
+  {
+    icon: "💻",
+    link: "https://github.com/pahwasiya26-source/S-09-Online-Misinformation-Awareness-Campaign-for-Young-Adults"
+  },
+  {
+    icon: "🌐",
+    link: "https://truthlens-ai-virid.vercel.app"
+  },
+  {
+    icon: "📧",
+    link: "mailto:your-email@example.com"
+  },
+].map((item) => (
       <button
         key={item.icon}
         onClick={() => window.open(item.link, "_blank")}
@@ -1790,22 +1798,24 @@ const [message, setMessage] = useState("");
           flexWrap: 'wrap',
           gap: 12,
         }}>
-          <div style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>
-            © 2026 TruthLens AI. Built to fight falsehood.
-          </div>
+          <div style={{ color: 'var(--muted)', fontSize: '0.8rem', lineHeight: 1.8 }}>
+  © 2026 TruthLens AI • Developed by <strong>Siya Pahwa</strong>
+  <br />
+  Chandigarh University Season of Code (CUSoC)
+</div>
           <div style={{ display: 'flex', gap: 20 }}>
             {[
   {
-    title: "Privacy Policy",
-    link: "https://privacy.microsoft.com"
+    title: "🌐 Live Demo",
+    link: "https://truthlens-ai-virid.vercel.app"
   },
   {
-    title: "Terms of Use",
-    link: "https://www.microsoft.com/servicesagreement"
+    title: "💻 GitHub",
+    link: "https://github.com/pahwasiya26-source/S-09-Online-Misinformation-Awareness-Campaign-for-Young-Adults"
   },
   {
-    title: "API Access",
-    link: "https://platform.openai.com/docs"
+    title: "📄 MIT License",
+    link: "https://github.com/pahwasiya26-source/S-09-Online-Misinformation-Awareness-Campaign-for-Young-Adults/blob/main/LICENSE"
   },
 ].map((item) => (
   <span
