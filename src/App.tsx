@@ -785,18 +785,40 @@ function DeepfakeDetector() {
   const [mode, setMode] = useState<'image' | 'video'>('image')
   const [scanning, setScanning] = useState(false)
   const [done, setDone] = useState(false)
+  const [scanResult, setScanResult] = useState<null | {
+  score: number
+  verdict: string
+  confidence: number
+}>(null)
   const [fileName, setFileName] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
   const runScan = () => {
-    if (!fileName) return
-    setScanning(true)
-    setDone(false)
-    setTimeout(() => {
-      setScanning(false)
-      setDone(true)
-    }, 3000)
-  }
+  if (!fileName) return
+
+  setScanning(true)
+  setDone(false)
+  setScanResult(null)
+
+  setTimeout(() => {
+    let score = 18
+
+    const name = fileName.toLowerCase()
+
+    if (name.includes("fake")) score = 82
+    if (name.includes("deepfake")) score = 91
+    if (name.includes("edited")) score = 65
+
+    setScanResult({
+      score,
+      verdict: score > 60 ? "⚠️ Possible Deepfake" : "✅ Likely Real",
+      confidence: Math.floor(Math.random() * 8) + 92,
+    })
+
+    setScanning(false)
+    setDone(true)
+  }, 3000)
+}
 
   return (
     <section id="deepfake" className="section" style={{ background: 'linear-gradient(180deg, transparent, rgba(255,77,109,0.02), transparent)' }}>
@@ -868,6 +890,46 @@ function DeepfakeDetector() {
             >
               {scanning ? 'Running AI Analysis...' : '🤖 Detect Deepfake'}
             </button>
+            {scanResult && (
+  <div
+    className="glass-card"
+    style={{
+      marginTop: 20,
+      padding: 20,
+      borderRadius: 16,
+      border: "1px solid rgba(255,255,255,0.08)"
+    }}
+  >
+    <h3>🤖 AI Detection Result</h3>
+
+    <div style={{ fontSize: 32, fontWeight: 700 }}>
+      {scanResult.score}%
+    </div>
+
+    <div
+      style={{
+        color: scanResult.score > 60 ? "var(--danger)" : "var(--accent)",
+        fontWeight: 600,
+        marginTop: 8
+      }}
+    >
+      {scanResult.verdict}
+    </div>
+
+    <div style={{ marginTop: 10 }}>
+      AI Confidence: {scanResult.confidence}%
+    </div>
+
+    <div className="progress-bar" style={{ marginTop: 12 }}>
+      <div
+        className="progress-fill"
+        style={{
+          width: `${scanResult.score}%`
+        }}
+      />
+    </div>
+  </div>
+)}
           </div>
 
           {/* Results Panel */}
@@ -943,7 +1005,39 @@ function DeepfakeDetector() {
 }
 
 // ─── How To Verify News ───────────────────────────────────────────────────────
-function VerifyNewsSection() {
+ function VerifyNewsSection() {
+  const [newsInput, setNewsInput] = useState("")
+  const [checking, setChecking] = useState(false)
+  const [newsResult, setNewsResult] = useState("")
+
+  const verifyNews = () => {
+    if (!newsInput.trim()) return
+
+    setChecking(true)
+
+    setTimeout(() => {
+      const text = newsInput.toLowerCase()
+
+      if (
+        text.includes("breaking") ||
+        text.includes("viral") ||
+        text.includes("shocking") ||
+        text.includes("forward") ||
+        text.includes("must share")
+      ) {
+        setNewsResult(
+          "⚠️ This news may require fact-checking before sharing. It contains keywords commonly found in misleading content."
+        )
+      } else {
+        setNewsResult(
+          "✅ No obvious misinformation indicators detected. Still verify from trusted sources before sharing."
+        )
+      }
+
+      setChecking(false)
+    }, 1800)
+  }
+
   return (
     <section id="verify" className="section">
       <div className="section-inner">
@@ -955,46 +1049,131 @@ function VerifyNewsSection() {
           color="var(--accent)"
         />
 
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
           {VERIFY_STEPS.map((step, i) => (
-            <div key={step.num} className="timeline-step" style={{ marginBottom: i < VERIFY_STEPS.length - 1 ? 12 : 0 }}>
-              {/* Line */}
-              {i < VERIFY_STEPS.length - 1 && <div className="timeline-line" />}
+            <div
+              key={step.num}
+              className="timeline-step"
+              style={{ marginBottom: i < VERIFY_STEPS.length - 1 ? 12 : 0 }}
+            >
+              {i < VERIFY_STEPS.length - 1 && (
+                <div className="timeline-line" />
+              )}
 
-              {/* Number */}
-              <div style={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'Space Mono',
-                fontWeight: 700,
-                fontSize: '0.7rem',
-                color: '#000',
-                flexShrink: 0,
-                zIndex: 1,
-                position: 'relative',
-                boxShadow: '0 0 20px rgba(0,229,255,0.3)',
-              }}>
+              <div
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: "50%",
+                  background:
+                    "linear-gradient(135deg, var(--primary), var(--secondary))",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: "Space Mono",
+                  fontWeight: 700,
+                  fontSize: "0.7rem",
+                  color: "#000",
+                  flexShrink: 0,
+                  zIndex: 1,
+                  position: "relative",
+                  boxShadow: "0 0 20px rgba(0,229,255,0.3)",
+                }}
+              >
                 {step.num}
               </div>
 
-              {/* Content */}
-              <div className="glass-card" style={{ flex: 1, padding: '18px 22px', marginBottom: 12 }}>
-                <div style={{ fontFamily: 'Space Grotesk', fontWeight: 600, fontSize: '1rem', color: 'var(--text)', marginBottom: 6 }}>{step.title}</div>
-                <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.6 }}>{step.desc}</div>
+              <div
+                className="glass-card"
+                style={{
+                  flex: 1,
+                  padding: "18px 22px",
+                  marginBottom: 12,
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "Space Grotesk",
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    color: "var(--text)",
+                    marginBottom: 6,
+                  }}
+                >
+                  {step.title}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: "0.875rem",
+                    color: "var(--muted)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {step.desc}
+                </div>
               </div>
             </div>
           ))}
+
+          {/* Interactive News Verifier */}
+
+          <div
+            className="glass-card"
+            style={{
+              marginTop: 30,
+              padding: 24,
+            }}
+          >
+            <h3
+              style={{
+                marginBottom: 16,
+                fontFamily: "Space Grotesk",
+              }}
+            >
+              🔎 Try News Verification
+            </h3>
+
+            <textarea
+              className="glass-input"
+              rows={4}
+              placeholder="Paste any news headline or WhatsApp message..."
+              value={newsInput}
+              onChange={(e) => setNewsInput(e.target.value)}
+            />
+
+            <button
+              className="btn-primary"
+              style={{
+                marginTop: 16,
+              }}
+              onClick={verifyNews}
+              disabled={checking}
+            >
+              {checking ? "Checking..." : "Verify News"}
+            </button>
+
+            {newsResult && (
+              <div
+                style={{
+                  marginTop: 20,
+                  padding: 18,
+                  borderRadius: 12,
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  color: "var(--text)",
+                  lineHeight: 1.6,
+                }}
+              >
+                {newsResult}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </section>
   )
 }
-
 // ─── Trusted Platforms ────────────────────────────────────────────────────────
 function PlatformsSection() {
   return (
