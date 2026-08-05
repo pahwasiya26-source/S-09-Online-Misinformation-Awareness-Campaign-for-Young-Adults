@@ -89,11 +89,46 @@ const WHY_CARDS = [
 ]
 
 const RESOURCES = [
-  { title: "Media Literacy Guide", desc: "Comprehensive handbook for identifying misinformation", icon: "📖", type: "PDF Guide", size: "2.4 MB" },
-  { title: "Workshop PPT", desc: "Ready-to-use presentation for classroom sessions", icon: "📊", type: "PPTX", size: "18.2 MB" },
-  { title: "Awareness Posters", desc: "High-resolution print-ready infographic posters", icon: "🖼️", type: "ZIP Pack", size: "45 MB" },
-  { title: "Browser Extensions", desc: "Real-time fact-checking tools for Chrome and Firefox", icon: "🧩", type: "Extension", size: "Free" },
-  { title: "Fact Checking Toolkit", desc: "Step-by-step verification templates and checklists", icon: "🛠️", type: "PDF Kit", size: "1.8 MB" },
+  {
+    title: "Google Reverse Image Search",
+    desc: "Verify whether an image has been edited or used out of context.",
+    icon: "🔍",
+    type: "Web Tool",
+    size: "Free",
+    link: "https://images.google.com/"
+  },
+  {
+    title: "PIB Fact Check",
+    desc: "Official Government of India fact-checking service.",
+    icon: "🇮🇳",
+    type: "Website",
+    size: "Free",
+    link: "https://factcheck.pib.gov.in/"
+  },
+  {
+    title: "BOOM Live",
+    desc: "Independent fact-checking platform covering misinformation.",
+    icon: "📰",
+    type: "Website",
+    size: "Free",
+    link: "https://www.boomlive.in/"
+  },
+  {
+    title: "Alt News",
+    desc: "Verify viral claims and fake news circulating online.",
+    icon: "✅",
+    type: "Website",
+    size: "Free",
+    link: "https://www.altnews.in/"
+  },
+  {
+    title: "Snopes",
+    desc: "International fact-checking website for rumors and misinformation.",
+    icon: "🌍",
+    type: "Website",
+    size: "Free",
+    link: "https://www.snopes.com/"
+  },
 ]
 
 const VERIFY_STEPS = [
@@ -1739,14 +1774,25 @@ const [message, setMessage] = useState("");
           <div>
             <div style={{ fontFamily: 'Space Grotesk', fontWeight: 600, marginBottom: 16, fontSize: '0.875rem', color: 'var(--text)' }}>Resources</div>
             {RESOURCES.map(r => (
-              <button key={r.title} style={{
-                display: 'block', background: 'none', border: 'none', color: 'var(--muted)',
-                fontSize: '0.85rem', padding: '4px 0', cursor: 'pointer', textAlign: 'left',
-                transition: 'color 0.2s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
-                onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}
-              >{r.title}</button>
+              <button
+  key={r.title}
+  onClick={() => window.open(r.link, "_blank")}
+  style={{
+    display: 'block',
+    background: 'none',
+    border: 'none',
+    color: 'var(--muted)',
+    fontSize: '0.85rem',
+    padding: '4px 0',
+    cursor: 'pointer',
+    textAlign: 'left',
+    transition: 'color 0.2s',
+  }}
+  onMouseEnter={e => e.currentTarget.style.color = 'var(--accent)'}
+  onMouseLeave={e => e.currentTarget.style.color = 'var(--muted)'}
+>
+  {r.title}
+</button>
             ))}
           </div>
 
