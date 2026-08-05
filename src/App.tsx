@@ -1504,6 +1504,13 @@ const [message, setMessage] = useState("");
     return;
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    setMessage("❌ Please enter a valid email.");
+    return;
+  }
+
   setLoading(true);
   setMessage("");
 
@@ -1539,38 +1546,91 @@ const [message, setMessage] = useState("");
         }}>
           {/* Brand */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: 10,
-                background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
-              }}>🔍</div>
-              <span style={{ fontFamily: 'Space Grotesk', fontWeight: 700, fontSize: '1.1rem' }}>
-                <span style={{ color: 'var(--primary)' }}>Truth</span>
-                <span>Lens</span>
-                <span style={{ color: 'var(--muted)', fontSize: '0.75rem', marginLeft: 4 }}>AI</span>
-              </span>
-            </div>
-            <p style={{ color: 'var(--muted)', fontSize: '0.875rem', lineHeight: 1.7, maxWidth: 280, margin: '0 0 20px' }}>
-              Fighting misinformation with artificial intelligence. Free, open, and built for everyone.
-            </p>
-            <div style={{ display: 'flex', gap: 10 }}>
-              {['𝕏', 'in', '📘', '▶'].map(s => (
-                <button key={s} style={{
-                  width: 36, height: 36, borderRadius: 10,
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: 'var(--muted)',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem',
-                  transition: 'all 0.2s',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,229,255,0.08)'; e.currentTarget.style.color = 'var(--primary)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--muted)' }}
-                >{s}</button>
-              ))}
-            </div>
-          </div>
+  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+    <div
+      style={{
+        width: 36,
+        height: 36,
+        borderRadius: 10,
+        background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 16,
+      }}
+    >
+      🔍
+    </div>
+
+    <span
+      style={{
+        fontFamily: 'Space Grotesk',
+        fontWeight: 700,
+        fontSize: '1.1rem',
+      }}
+    >
+      <span style={{ color: 'var(--primary)' }}>Truth</span>
+      <span>Lens</span>
+      <span
+        style={{
+          color: 'var(--muted)',
+          fontSize: '0.75rem',
+          marginLeft: 4,
+        }}
+      >
+        AI
+      </span>
+    </span>
+  </div>
+
+  <p
+    style={{
+      color: 'var(--muted)',
+      fontSize: '0.875rem',
+      lineHeight: 1.7,
+      maxWidth: 280,
+      margin: '0 0 20px',
+    }}
+  >
+    Fighting misinformation with artificial intelligence.
+    Free, open, and built for everyone.
+  </p>
+
+  <div style={{ display: 'flex', gap: 10 }}>
+    {[
+      { icon: "𝕏", link: "https://x.com" },
+      { icon: "in", link: "https://linkedin.com" },
+      { icon: "📘", link: "https://facebook.com" },
+      { icon: "▶", link: "https://youtube.com" },
+    ].map((item) => (
+      <button
+        key={item.icon}
+        onClick={() => window.open(item.link, "_blank")}
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          background: 'rgba(255,255,255,0.04)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          color: 'var(--muted)',
+          cursor: 'pointer',
+          fontSize: '0.85rem',
+          transition: 'all 0.2s',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(0,229,255,0.08)';
+          e.currentTarget.style.color = 'var(--primary)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+          e.currentTarget.style.color = 'var(--muted)';
+        }}
+      >
+        {item.icon}
+      </button>
+    ))}
+  </div>
+</div>
 
           {/* Quick Links */}
           <div>
@@ -1619,30 +1679,9 @@ const [message, setMessage] = useState("");
               />
               <button
   className="btn-primary"
-  style={{ fontSize: '0.85rem', padding: '12px 20px' }}
-  onClick={async () => {
-    if (!email) {
-      setMessage("Please enter an email");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    const { error } = await supabase
-      .from("newsletter")
-      .insert([{ email }]);
-
-    if (error) {
-      setMessage("Something went wrong!");
-      console.log(error);
-    } else {
-      setMessage("✅ Subscribed successfully!");
-      setEmail("");
-    }
-
-    setLoading(false);
-  }}
+  style={{ fontSize: "0.85rem", padding: "12px 20px" }}
+  onClick={handleSubscribe}
+  disabled={loading}
 >
   {loading ? "Subscribing..." : "Subscribe →"}
 </button>
@@ -1675,9 +1714,39 @@ const [message, setMessage] = useState("");
             © 2026 TruthLens AI. Built to fight falsehood.
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
-            {['Privacy Policy', 'Terms of Use', 'API Access'].map(link => (
-              <span key={link} style={{ color: 'var(--muted)', fontSize: '0.8rem', cursor: 'pointer' }}>{link}</span>
-            ))}
+            {[
+  {
+    title: "Privacy Policy",
+    link: "https://privacy.microsoft.com"
+  },
+  {
+    title: "Terms of Use",
+    link: "https://www.microsoft.com/servicesagreement"
+  },
+  {
+    title: "API Access",
+    link: "https://platform.openai.com/docs"
+  },
+].map((item) => (
+  <span
+    key={item.title}
+    onClick={() => window.open(item.link, "_blank")}
+    style={{
+      color: "var(--muted)",
+      fontSize: "0.8rem",
+      cursor: "pointer",
+      transition: "0.2s",
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.color = "var(--primary)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.color = "var(--muted)";
+    }}
+  >
+    {item.title}
+  </span>
+))}
           </div>
           <div className="badge badge-cyan">
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', display: 'inline-block', animation: 'blink 2s infinite' }} />
